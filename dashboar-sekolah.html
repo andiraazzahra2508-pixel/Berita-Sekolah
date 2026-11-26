@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kandinsky Academy | International School</title>
+
+  <!-- Bootstrap 5.3 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- AOS (Animate On Scroll) Library CSS -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+  <!-- Font ICS Zurich: Outfit & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       1. Design Tokens & Universal Setup
+       ========================================================================== */
+    :root {
+      --ics-navy: #182538;
+      --ics-dark: #0D1622;
+      --ics-orange: #E85D25;
+      --ics-orange-hover: #D04F1B;
+      --ics-muted: #5D6A7E;
+      --ics-bg-light: #F7F7F8;
+      --ics-border: #E5E8ED;
+      --font-display: 'Outfit', sans-serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+      --radius-squircle: 54px;
+    }
+
+    body {
+      font-family: var(--font-body);
+      color: #222933;
+      background-color: #FFFFFF;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, h4, .brand-title {
+      font-family: var(--font-display);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      line-height: 0.98;
+      color: var(--ics-dark);
+    }
+
+    h1 { font-size: clamp(46px, 5.8vw, 80px); }
+    h2 { font-size: clamp(34px, 4.4vw, 58px); }
+    h3 { font-size: clamp(22px, 2.6vw, 34px); }
+
+    .text-orange { color: var(--ics-orange) !important; }
+    .bg-orange { background-color: var(--ics-orange) !important; }
+    .bg-dark-ics { background-color: var(--ics-dark) !important; }
+    .bg-light-ics { background-color: var(--ics-bg-light) !important; }
+
+    /* Parallax Hardware Acceleration */
+    .parallax-item {
+      will-change: transform;
+      transition: transform 0.15s cubic-bezier(0.2, 0.8, 0.4, 1);
+    }
+
+    @keyframes slowSpin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes radarPulse {
+      0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); }
+      70% { box-shadow: 0 0 0 16px rgba(255, 255, 255, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+    }
+
+    /* Floating Tab "ENQUIRE" */
+    .floating-enquire-tab {
+      position: fixed;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%) rotate(-90deg);
+      transform-origin: right bottom;
+      background-color: var(--ics-orange);
+      color: #FFFFFF;
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 12px 26px;
+      border-radius: 12px 12px 0 0;
+      z-index: 1040;
+      cursor: pointer;
+      box-shadow: -4px -4px 16px rgba(232, 93, 37, 0.35);
+      border: none;
+      transition: background-color 0.3s, transform 0.3s cubic-bezier(0.2, 1, 0.3, 1);
+    }
+    .floating-enquire-tab:hover {
+      background-color: var(--ics-orange-hover);
+      transform: translateY(-50%) rotate(-90deg) scale(1.06);
+    }
+
+    /* ==========================================================================
+       2. Navbar: Indikator Garis Bawah Oranye Seragam Tanpa Dobel Aktif
+       ========================================================================== */
+    .navbar-brand .logo-main {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 900;
+      line-height: 1;
+      color: var(--ics-dark);
+      transition: color 0.3s ease;
+    }
+    .navbar-brand:hover .logo-main {
+      color: var(--ics-orange);
+    }
+    .navbar-brand .logo-sub {
+      font-size: 9px;
+      font-weight: 800;
+      color: var(--ics-orange);
+      letter-spacing: 0.22em;
+      display: block;
+      margin-top: 3px;
+    }
+
+    /* Hilangkan panah segitiga default Bootstrap tanpa mematikan garis bawah */
+    .navbar-nav .dropdown-toggle::after {
+      display: inline-block !important;
+      border: none !important;
+      margin: 0 !important;
+      vertical-align: unset !important;
+    }
+
+    /* Base Styling untuk Semua Nav Link */
+    .nav-link {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--ics-dark) !important;
+      margin: 0 4px;
+      position: relative;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 8px 10px !important;
+      transition: color 0.3s ease;
+    }
+
+    /* Perubahan warna teks saat disentuh atau aktif */
+    .nav-link:hover,
+    .nav-link.active,
+    .nav-link[aria-expanded="true"] {
+      color: var(--ics-orange) !important;
+    }
+
+    /* Garis Bawah Oranye Dasar */
+    .nav-link::after {
+      content: '' !important;
+      position: absolute;
+      bottom: 0px;
+      left: 10px;
+      right: 10px;
+      height: 2.5px;
+      background-color: var(--ics-orange) !important;
+      border-radius: 4px;
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.35s cubic-bezier(0.2, 1, 0.3, 1);
+    }
+
+    /* PERBAIKAN: Garis bawah HANYA aktif untuk menu yang dibuka (.active) atau disentuh kursor (:hover).
+       [aria-expanded="true"] dihapus dari sini agar menu dropdown yang terbuka tidak ikut menyalakan garis permanen. */
+    .nav-link:hover::after {
+      transform: scaleX(1) !important;
+      transform-origin: left !important;
+    }
+
+    /* Ikon Chevron Panah Dropdown */
+    .dropdown-arrow-icon {
+      transition: transform 0.25s ease, stroke 0.3s ease;
+      stroke: currentColor;
+    }
+    .nav-item.dropdown:hover .dropdown-arrow-icon,
+    .nav-link[aria-expanded="true"] .dropdown-arrow-icon {
+      transform: rotate(180deg);
+      stroke: var(--ics-orange);
+    }
+
+    /* Dropdown Menu Modal Box */
+    .dropdown-menu-custom {
+      border-radius: 20px !important;
+      background: #FFFFFF;
+      border: 1px solid var(--ics-border) !important;
+      margin-top: 10px !important;
+      min-width: 230px;
+      animation: dropdownFade 0.25s cubic-bezier(0.2, 1, 0.3, 1);
+    }
+    @keyframes dropdownFade {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .dropdown-item {
+      font-family: var(--font-body);
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--ics-dark);
+      transition: all 0.2s ease;
+    }
+    .dropdown-item:hover {
+      background-color: var(--ics-bg-light);
+      color: var(--ics-orange);
+      transform: translateX(4px);
+    }
+
+    /* Hilangkan background biru Bootstrap pada item aktif */
+    .dropdown-item.active, 
+    .dropdown-item:active {
+      background-color: var(--ics-bg-light) !important;
+      color: var(--ics-orange) !important;
+      font-weight: 700 !important;
+    }
+
+    /* ==========================================================================
+       3. Hero Section & Video
+       ========================================================================== */
+    .hero-video-pill {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      border-radius: var(--radius-squircle);
+      overflow: hidden;
+      background-color: var(--ics-dark);
+      box-shadow: 0 20px 50px rgba(13, 22, 34, 0.15);
+      transition: transform 0.5s cubic-bezier(0.2, 1, 0.3, 1), box-shadow 0.5s ease;
+    }
+    .hero-video-pill:hover {
+      box-shadow: 0 25px 60px rgba(232, 93, 37, 0.2);
+    }
+    .hero-video-pill video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+    }
+    .hero-video-pill:hover video {
+      transform: scale(1.03);
+    }
+
+    .video-control-pill {
+      position: absolute;
+      bottom: 24px;
+      left: 28px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: rgba(13, 22, 34, 0.65);
+      backdrop-filter: blur(6px);
+      border: 2px solid #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFFFFF;
+      cursor: pointer;
+      z-index: 10;
+      animation: radarPulse 2.4s infinite;
+      transition: transform 0.3s cubic-bezier(0.2, 1, 0.3, 1), background-color 0.3s ease;
+    }
+    .video-control-pill:hover {
+      background: var(--ics-orange);
+      border-color: var(--ics-orange);
+      transform: scale(1.18);
+      animation: none;
+    }
+
+    /* ==========================================================================
+       4. We Inspire Interactive Box
+       ========================================================================== */
+    .inspire-visual-box {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 11;
+      border-radius: var(--radius-squircle);
+      overflow: hidden;
+      box-shadow: 0 16px 40px rgba(13, 22, 34, 0.1);
+    }
+    .inspire-visual-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: opacity 0.4s ease, transform 0.7s cubic-bezier(0.2, 1, 0.3, 1);
+      display: block;
+    }
+    .inspire-visual-box:hover img {
+      transform: scale(1.06);
+    }
+    .inspire-pill-stack {
+      position: absolute;
+      top: 50%;
+      right: 24px;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 10;
+    }
+    .inspire-pill-stack .btn-pill {
+      background: rgba(13, 22, 34, 0.82);
+      backdrop-filter: blur(8px);
+      color: #FFFFFF;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 10px 22px;
+      border-radius: 50rem;
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.2, 1, 0.3, 1);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .inspire-pill-stack .btn-pill.active,
+    .inspire-pill-stack .btn-pill:hover {
+      background-color: var(--ics-orange);
+      border-color: var(--ics-orange);
+      transform: translateX(-10px);
+      box-shadow: 0 8px 24px rgba(232, 93, 37, 0.4);
+    }
+
+    /* ==========================================================================
+       5. Kartu Jenjang Belajar
+       ========================================================================== */
+    .stage-card {
+      border: 1px solid var(--ics-border);
+      border-radius: var(--radius-squircle);
+      overflow: hidden;
+      background: #FFFFFF;
+      transition: transform 0.5s cubic-bezier(0.2, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.2, 1, 0.3, 1), border-color 0.4s ease;
+      text-align: center;
+    }
+    .stage-card:hover {
+      transform: translateY(-12px);
+      border-color: rgba(232, 93, 37, 0.4);
+      box-shadow: 0 28px 56px rgba(13, 22, 34, 0.12);
+    }
+    .stage-card-img-wrap {
+      width: 100%;
+      aspect-ratio: 1 / 1.15;
+      overflow: hidden;
+      border-radius: var(--radius-squircle) var(--radius-squircle) 0 0;
+    }
+    .stage-card-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+      display: block;
+    }
+    .stage-card:hover .stage-card-img-wrap img {
+      transform: scale(1.08);
+    }
+    .stage-circle-btn {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background-color: var(--ics-orange);
+      color: #FFFFFF;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      transition: transform 0.4s cubic-bezier(0.2, 1, 0.3, 1), background-color 0.3s ease;
+    }
+    .stage-card:hover .stage-circle-btn {
+      background-color: var(--ics-dark);
+      transform: scale(1.18) rotate(45deg);
+    }
+
+    /* ==========================================================================
+       6. Beyond the Scoreboard, 4 Pilar, Testimoni
+       ========================================================================== */
+    .stamp-badge {
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--ics-orange) 0%, #C84614 100%);
+      color: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+      box-shadow: 0 20px 50px rgba(232, 93, 37, 0.35);
+      cursor: pointer;
+      position: relative;
+      margin: 0 auto;
+      transition: transform 0.4s cubic-bezier(0.2, 1, 0.3, 1), box-shadow 0.4s ease;
+    }
+    .stamp-badge::before {
+      content: '';
+      position: absolute;
+      inset: 8px;
+      border: 2px dashed rgba(255, 255, 255, 0.45);
+      border-radius: 50%;
+      animation: slowSpin 35s linear infinite;
+    }
+    .stamp-badge:hover {
+      transform: scale(1.08) rotate(-2deg);
+      box-shadow: 0 26px 60px rgba(232, 93, 37, 0.5);
+    }
+    .stamp-badge:hover::before {
+      animation-play-state: paused;
+    }
+
+    .strategic-card {
+      border-radius: 44px;
+      padding: 44px 36px;
+      color: #FFFFFF;
+      min-height: 320px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.5s cubic-bezier(0.2, 1, 0.3, 1), box-shadow 0.5s ease;
+    }
+    .strategic-card:hover {
+      transform: translateY(-10px) scale(1.015);
+    }
+    .card-compass { background: linear-gradient(135deg, #7BC676 0%, #5EA859 100%); }
+    .card-compass:hover { box-shadow: 0 24px 48px rgba(94, 168, 89, 0.4); }
+
+    .card-community { background: linear-gradient(135deg, #2EB5B8 0%, #1E9194 100%); }
+    .card-community:hover { box-shadow: 0 24px 48px rgba(46, 181, 184, 0.4); }
+
+    .card-innovation { background: linear-gradient(135deg, #E85D25 0%, #C44512 100%); }
+    .card-innovation:hover { box-shadow: 0 24px 48px rgba(232, 93, 37, 0.4); }
+
+    .card-wellbeing { background: linear-gradient(135deg, #8B3A62 0%, #682345 100%); }
+    .card-wellbeing:hover { box-shadow: 0 24px 48px rgba(139, 58, 98, 0.4); }
+
+    .strategic-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.22);
+      backdrop-filter: blur(6px);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      transition: transform 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+    }
+    .strategic-card:hover .strategic-icon {
+      transform: scale(1.15) rotate(10deg);
+    }
+
+    .testimonial-card {
+      border-radius: 36px;
+      overflow: hidden;
+      border: 1px solid var(--ics-border);
+      background: #FFFFFF;
+      cursor: pointer;
+      transition: transform 0.5s cubic-bezier(0.2, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.5s ease;
+    }
+    .testimonial-card:hover {
+      transform: translateY(-10px);
+      border-color: var(--ics-orange);
+      box-shadow: 0 24px 48px rgba(13, 22, 34, 0.1);
+    }
+    .video-viewport {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: var(--ics-dark);
+      overflow: hidden;
+    }
+    .video-viewport video,
+    .video-viewport .poster-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .video-viewport .poster-img {
+      transition: opacity 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+      z-index: 2;
+    }
+    .testimonial-card:hover .poster-img {
+      opacity: 0;
+    }
+
+    /* ==========================================================================
+       7. Footer Modular
+       ========================================================================== */
+    .footer-ics {
+      background-color: var(--ics-dark);
+      color: #FFFFFF;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .footer-pre-strip {
+      background-color: #080E17;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 36px 0;
+    }
+    .footer-brand-title {
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 900;
+      text-transform: uppercase;
+      color: #FFFFFF;
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+    .footer-sub {
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--ics-orange);
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      display: block;
+      margin-top: 4px;
+    }
+    .footer-heading {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #FFFFFF;
+      margin-bottom: 22px;
+      position: relative;
+      display: inline-block;
+    }
+    .footer-heading::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      width: 20px;
+      height: 2px;
+      background-color: var(--ics-orange);
+    }
+    .footer-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .footer-links li {
+      margin-bottom: 12px;
+    }
+    .footer-links a {
+      color: rgba(255, 255, 255, 0.65);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.25s ease, transform 0.25s ease;
+      display: inline-block;
+    }
+    .footer-links a:hover {
+      color: var(--ics-orange);
+      transform: translateX(6px);
+    }
+    .social-circle-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #FFFFFF;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.2, 1, 0.3, 1);
+    }
+    .social-circle-btn:hover {
+      background-color: var(--ics-orange);
+      border-color: var(--ics-orange);
+      color: #FFFFFF;
+      transform: translateY(-4px) scale(1.1);
+      box-shadow: 0 8px 20px rgba(232, 93, 37, 0.4);
+    }
+    .sub-footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 24px 0;
+      font-size: 12.5px;
+      color: rgba(255, 255, 255, 0.45);
+    }
+    .sub-footer-bottom a {
+      color: rgba(255, 255, 255, 0.55);
+      text-decoration: none;
+      margin-left: 20px;
+      transition: color 0.2s;
+    }
+    .sub-footer-bottom a:hover {
+      color: var(--ics-orange);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Tab "ENQUIRE" -->
+  <button class="floating-enquire-tab" data-bs-toggle="modal" data-bs-target="#tourModal">ENQUIRE</button>
+
+  <!-- NAVBAR DENGAN INDIKATOR ORANYE SERAGAM DI SEMUA MENU -->
+  <nav class="navbar navbar-expand-xl sticky-top bg-white border-bottom shadow-sm" id="mainNavbar">
+    <div class="container py-1">
+      <a class="navbar-brand d-flex flex-column text-uppercase text-decoration-none" href="index.html">
+        <span class="logo-main">Kandinsky Academy</span>
+        <span class="logo-sub">Est. 1960 &bull; IB World School</span>
+      </a>
+
+      <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse justify-content-end" id="navbarContent">
+        <ul class="navbar-nav align-items-xl-center me-xl-3 mb-2 mb-xl-0">
+          
+          <!-- 1. Home (Aktif) -->
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Home</a>
+          </li>
+
+          <!-- 2. About (Dropdown) -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              About
+              <svg class="dropdown-arrow-icon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-custom border-0 shadow-lg p-2">
+              <li><a class="dropdown-item py-2 px-3 rounded-3" href="profil-singkat.html">Profil Singkat</a></li>
+              <li><a class="dropdown-item py-2 px-3 rounded-3" href="visi-misi.html">Visi & Misi</a></li>
+            </ul>
+          </li>
+
+          <!-- 3. Fasilitas (Dropdown) -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Fasilitas
+              <svg class="dropdown-arrow-icon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-custom border-0 shadow-lg p-2">
+              <li><a class="dropdown-item py-2 px-3 rounded-3" href="fasilitas.html">Sarana Kampus</a></li>
+              <li><a class="dropdown-item py-2 px-3 rounded-3" href="struktur-organisasi.html">Struktur Organisasi</a></li>
+              <li><a class="dropdown-item py-2 px-3 rounded-3" href="ekstrakurikuler.html">Program Ekstrakurikuler</a></li>
+            </ul>
+          </li>
+
+          <!-- 4. Galeri -->
+          <li class="nav-item">
+            <a class="nav-link" href="gallery.html">Galeri</a>
+          </li>
+
+          <!-- 5. Berita (Dropdown) -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Berita
+              <svg class="dropdown-arrow-icon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-custom border-0 shadow-lg p-2">
+              <li><a class="dropdown-item py-2 px-3 rounded-3" href="berita.html">Kabar & Agenda</a></li>
+              <li><hr class="dropdown-divider my-1"></li>
+              <li><a class="dropdown-item py-2 px-3 rounded-3 text-orange fw-bold" href="pembayaran.html">Info Pembayaran Lengkap</a></li>
+            </ul>
+          </li>
+
+          <!-- 6. PPDB -->
+          <li class="nav-item">
+            <a class="nav-link" href="ppdb.html">PPDB</a>
+          </li>
+        </ul>
+
+        <!-- Tombol Booking Tur Kampus -->
+        <button class="btn btn-outline-dark rounded-pill px-4 fw-bold text-uppercase small" data-bs-toggle="modal" data-bs-target="#tourModal">
+          Jadwalkan Tur
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION: Squircle Pill Video dengan Parallax Scroll -->
+  <section class="py-5 overflow-hidden position-relative">
+    <div class="container py-lg-4">
+      <div class="row align-items-center g-5">
+        
+        <div class="col-lg-5" data-aos="fade-right" data-aos-duration="1000">
+          <h1>WELCOME<br>TO THE<br><span class="text-orange">JOURNEY.</span></h1>
+          <p class="mt-3 mb-4 fs-5 text-secondary">
+            Selama lebih dari 60 tahun, Kandinsky Academy telah menjadi lebih dari sekadar sekolah. Tempat di mana siswa melangkah melampaui ruang kelas untuk membentuk karakter, berkontribusi bagi sesama, dan berinteraksi aktif dengan peradaban dunia.
+          </p>
+          <a href="profil-singkat.html" class="btn btn-outline-dark rounded-pill px-4 py-3 fw-bold text-uppercase d-inline-flex align-items-center gap-2">
+            Explore our School &rarr;
+          </a>
+        </div>
+
+        <div class="col-lg-7" data-aos="fade-left" data-aos-duration="1100">
+          <div class="hero-video-pill parallax-item" data-parallax-speed="-0.08">
+            <video id="heroVideo" autoplay loop muted playsinline>
+              <source src="https://assets.mixkit.co/videos/preview/mixkit-young-female-student-reading-a-book-in-a-library-41219-large.mp4" type="video/mp4">
+            </video>
+            <!-- Tombol Radar Play/Pause -->
+            <button class="video-control-pill" id="videoToggleBtn" aria-label="Toggle Video">
+              <svg id="pauseIcon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+              <svg id="playIcon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display: none;"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION "WE INSPIRE." -->
+  <section class="py-5 border-top border-bottom bg-white overflow-hidden">
+    <div class="container py-lg-4">
+      
+      <span class="d-block fw-bold text-secondary text-uppercase mb-4" data-aos="fade-down" style="letter-spacing: 0.2em; font-size: 12.5px;">
+        AT KANDINSKY ACADEMY, WE GO BEYOND TEACHING.
+      </span>
+
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6" data-aos="zoom-in-right" data-aos-duration="1000">
+          <div class="inspire-visual-box">
+            <img id="inspireVisualImg" src="https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=900&q=80" alt="Inspiring Students">
+            
+            <div class="inspire-pill-stack">
+              <button class="btn-pill active" onclick="changeInspire('mission', this)">MISSION</button>
+              <button class="btn-pill" onclick="changeInspire('vision', this)">VISION</button>
+              <button class="btn-pill" onclick="changeInspire('values', this)">VALUES</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 ps-lg-4" data-aos="fade-left" data-aos-duration="1000">
+          <h2 class="display-3 fw-bold text-uppercase">WE<br><span class="text-orange">INSPIRE.</span></h2>
+          <p class="fs-5 text-dark mt-3 mb-4" id="inspireQuoteText" style="line-height: 1.7;">
+            Di Kandinsky Academy, kami berkomitmen menciptakan lingkungan belajar suportif di mana setiap anggota komunitas ditantang mencapai potensi individual, mengejar minat, dan bertanggung jawab sosial.
+          </p>
+          <a href="visi-misi.html" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-bold text-uppercase">
+            Pelajari Nilai Kami &rarr;
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- KARTU JENJANG BELAJAR TIGA KAPSUL -->
+  <section class="py-5 overflow-hidden">
+    <div class="container py-lg-5">
+      
+      <div class="text-center mx-auto mb-5" data-aos="fade-up" style="max-width: 760px;">
+        <span class="text-orange fw-bold text-uppercase d-block mb-2" style="letter-spacing: 0.2em; font-size: 12px;">OUR STAGES OF LEARNING</span>
+        <h2>A COMPLETE <span class="text-orange">IB JOURNEY.</span></h2>
+        <p class="text-secondary mt-3">Sebagai institusi penyedia program lengkap International Baccalaureate, kami mendampingi pembelajar dari usia 24 bulan hingga 18 tahun.</p>
+      </div>
+
+      <div class="row g-4 justify-content-center">
+        <!-- 1. PRIMARY -->
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="100" data-aos-duration="900">
+          <div class="stage-card pb-4">
+            <div class="stage-card-img-wrap">
+              <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=700&q=80" alt="Primary Stage">
+            </div>
+            <div class="p-4 pb-2">
+              <h3 class="mb-1">PRIMARY</h3>
+              <span class="text-orange fw-bold text-uppercase d-block mb-2" style="font-size: 12px;">NURSERY - GRADE 5</span>
+              <p class="text-muted fst-italic mb-3">Eksplorasi sensorik, pembelajaran alam terbuka (forest inquiry), dan dasar literasi bilingual.</p>
+              <a href="profil-singkat.html" class="stage-circle-btn text-decoration-none" aria-label="Lihat Primary">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. MIDDLE -->
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="250" data-aos-duration="900">
+          <div class="stage-card pb-4">
+            <div class="stage-card-img-wrap">
+              <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=700&q=80" alt="Middle Stage">
+            </div>
+            <div class="p-4 pb-2">
+              <h3 class="mb-1">MIDDLE</h3>
+              <span class="text-orange fw-bold text-uppercase d-block mb-2" style="font-size: 12px;">GRADE 6 - 8</span>
+              <p class="text-muted fst-italic mb-3">Penguatan logika kontekstual, pemecahan masalah multidisiplin STEAM, dan kolaborasi tim.</p>
+              <a href="profil-singkat.html" class="stage-circle-btn text-decoration-none" aria-label="Lihat Middle">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. SENIOR -->
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="400" data-aos-duration="900">
+          <div class="stage-card pb-4">
+            <div class="stage-card-img-wrap">
+              <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=700&q=80" alt="Senior Stage">
+            </div>
+            <div class="p-4 pb-2">
+              <h3 class="mb-1">SENIOR</h3>
+              <span class="text-orange fw-bold text-uppercase d-block mb-2" style="font-size: 12px;">GRADE 9 - 12</span>
+              <p class="text-muted fst-italic mb-3">Metodologi riset mandiri, penulisan esai akademis, dan persiapan ujian Diploma IB menuju universitas global.</p>
+              <a href="profil-singkat.html" class="stage-circle-btn text-decoration-none" aria-label="Lihat Senior">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION "BEYOND THE SCOREBOARD" & ROTATING BADGE -->
+  <section class="py-5 bg-light-ics overflow-hidden position-relative">
+    <div class="container py-lg-5">
+      <div class="row align-items-center g-5">
+        
+        <div class="col-lg-7" data-aos="fade-right" data-aos-duration="1000">
+          <span class="d-block text-secondary fw-bold text-uppercase mb-2" style="letter-spacing: 0.2em; font-size: 12px;">
+            WHAT MAKES KANDINSKY ACADEMY DIFFERENT?
+          </span>
+          <h2>BEYOND THE<br><span class="text-orange">SCOREBOARD.</span></h2>
+          <p class="fs-5 text-secondary mt-3 mb-4">Kami bangga akan perolehan skor IB unggulan, komunitas klub yang dinamis, dan keragaman global, namun keberhasilan tertinggi kami terletak pada karakter pembuat perubahan yang dibentuk oleh siswa kami.</p>
+
+          <div class="row g-3">
+            <div class="col-sm-6" data-aos="zoom-in" data-aos-delay="100">
+              <div class="p-4 bg-white rounded-4 border shadow-sm">
+                <div class="display-5 fw-bold text-dark" data-counter="800">0</div>
+                <div class="text-secondary small fw-semibold">Total pelajar aktif lintas jenjang pendidikan.</div>
+              </div>
+            </div>
+            <div class="col-sm-6" data-aos="zoom-in" data-aos-delay="200">
+              <div class="p-4 bg-white rounded-4 border shadow-sm">
+                <div class="display-5 fw-bold text-dark" data-counter="50" data-suffix="+">0</div>
+                <div class="text-secondary small fw-semibold">Kewarganegaraan siswa dan tenaga pendidik.</div>
+              </div>
+            </div>
+            <div class="col-sm-6" data-aos="zoom-in" data-aos-delay="300">
+              <div class="p-4 bg-white rounded-4 border shadow-sm">
+                <div class="display-5 fw-bold text-dark" data-counter="35.6" data-decimal="true">0</div>
+                <div class="text-secondary small fw-semibold">Rata-rata skor Diploma IB (di atas rata-rata global).</div>
+              </div>
+            </div>
+            <div class="col-sm-6" data-aos="zoom-in" data-aos-delay="400">
+              <div class="p-4 bg-white rounded-4 border shadow-sm">
+                <div class="display-5 fw-bold text-dark" data-counter="100" data-suffix="%">0</div>
+                <div class="text-secondary small fw-semibold">Tingkat penerimaan alumni di perguruan tinggi pilihan utama.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-5 text-center" data-aos="zoom-in-left" data-aos-duration="1000">
+          <div class="stamp-badge parallax-item" data-parallax-speed="0.06" data-bs-toggle="modal" data-bs-target="#tourModal">
+            <div class="display-3 fw-bold" style="line-height: 0.9;">65</div>
+            <div class="fw-bold text-uppercase mt-2 mb-3" style="letter-spacing: 0.15em; font-size: 14px;">YEARS OF EXCELLENCE</div>
+            <span class="badge bg-white bg-opacity-25 rounded-pill px-3 py-2 text-uppercase fw-bold">DISCOVER OUR STORY &rarr;</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION "OUR STRATEGIC DIRECTION" -->
+  <section class="py-5 bg-white overflow-hidden">
+    <div class="container py-lg-4">
+      
+      <div class="row align-items-end mb-5" data-aos="fade-up">
+        <div class="col-lg-7">
+          <span class="text-orange fw-bold text-uppercase d-block mb-2" style="letter-spacing: 0.2em; font-size: 12px;">
+            A JOURNEY OF DISCOVERY
+          </span>
+          <h2 class="display-4 fw-bold text-uppercase">OUR STRATEGIC<br><span class="text-orange">DIRECTION.</span></h2>
+        </div>
+        <div class="col-lg-5">
+          <p class="text-secondary fs-6 mb-0">
+            Hal yang membedakan perjalanan belajar di Kandinsky Academy adalah cara kami mendidik. Kami membentuk generasi berani, ingin tahu, dan bertanggung jawab sosial melalui 4 pilar terpadu:
+          </p>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <!-- 1. The Compass -->
+        <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100" data-aos-duration="800">
+          <div class="strategic-card card-compass shadow-sm">
+            <div>
+              <div class="strategic-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+              </div>
+              <h3 class="h4 fw-bold text-white text-uppercase mb-2">The Compass</h3>
+              <p class="small text-white-50 mb-0">Pemandu kompas moral, etika bernalar, dan ketangguhan pribadi siswa.</p>
+            </div>
+            <span class="fw-bold small text-uppercase" style="letter-spacing: 0.1em;">Pilar 01 &rarr;</span>
+          </div>
+        </div>
+
+        <!-- 2. Community -->
+        <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200" data-aos-duration="800">
+          <div class="strategic-card card-community shadow-sm">
+            <div>
+              <div class="strategic-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+              <h3 class="h4 fw-bold text-white text-uppercase mb-2">Community</h3>
+              <p class="small text-white-50 mb-0">Merajut keberagaman 50+ bangsa dalam ikatan empati dan kebersamaan.</p>
+            </div>
+            <span class="fw-bold small text-uppercase" style="letter-spacing: 0.1em;">Pilar 02 &rarr;</span>
+          </div>
+        </div>
+
+        <!-- 3. Innovation -->
+        <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300" data-aos-duration="800">
+          <div class="strategic-card card-innovation shadow-sm">
+            <div>
+              <div class="strategic-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </div>
+              <h3 class="h4 fw-bold text-white text-uppercase mb-2">Innovation</h3>
+              <p class="small text-white-50 mb-0">Riset multidisiplin STEAM dan kebebasan bereksperimen tanpa rasa takut.</p>
+            </div>
+            <span class="fw-bold small text-uppercase" style="letter-spacing: 0.1em;">Pilar 03 &rarr;</span>
+          </div>
+        </div>
+
+        <!-- 4. Wellbeing -->
+        <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="400" data-aos-duration="800">
+          <div class="strategic-card card-wellbeing shadow-sm">
+            <div>
+              <div class="strategic-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              </div>
+              <h3 class="h4 fw-bold text-white text-uppercase mb-2">Wellbeing</h3>
+              <p class="small text-white-50 mb-0">Menjaga kesehatan fisik, emosional, dan rasa aman bagi setiap anak.</p>
+            </div>
+            <span class="fw-bold small text-uppercase" style="letter-spacing: 0.1em;">Pilar 04 &rarr;</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- TESTIMONI VIDEO HOVER -->
+  <section class="py-5 bg-light-ics overflow-hidden">
+    <div class="container py-lg-4">
+      <div class="text-center mx-auto mb-5" data-aos="fade-up" style="max-width: 680px;">
+        <span class="text-orange fw-bold text-uppercase d-block mb-2" style="letter-spacing: 0.2em; font-size: 12px;">COMMUNITY STORIES</span>
+        <h2>OUR KIND OF <span class="text-orange">COMMUNITY.</span></h2>
+        <p class="text-secondary mt-2">Arahkan kursor pada kartu untuk memutar cuplikan video cerita dari orang tua, siswa, dan alumni kami.</p>
+      </div>
+
+      <div class="row g-4">
+        <!-- 1. Orang Tua -->
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="100" data-aos-duration="900">
+          <div class="testimonial-card shadow-sm" data-video-card>
+            <div class="video-viewport">
+              <video class="video-instance" muted playsinline loop preload="none">
+                <source src="https://assets.mixkit.co/videos/preview/mixkit-mother-and-daughter-smiling-together-41221-large.mp4" type="video/mp4">
+              </video>
+              <img class="poster-img" src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=700&q=80" alt="Ibu Rina Wijaya">
+              <span class="badge bg-dark position-absolute bottom-0 end-0 m-3 opacity-75">Hover to Play</span>
+            </div>
+            <div class="p-4">
+              <p class="fst-italic text-secondary mb-3">"Pendekatan inkuiri di sini melatih anak kami berani berpendapat dengan rasa percaya diri yang santun dan terbuka."</p>
+              <strong class="d-block text-dark">Ibu Rina Wijaya</strong>
+              <span class="text-orange text-uppercase small fw-bold">Orang Tua Siswa Primary</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Siswa -->
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="250" data-aos-duration="900">
+          <div class="testimonial-card shadow-sm" data-video-card>
+            <div class="video-viewport">
+              <video class="video-instance" muted playsinline loop preload="none">
+                <source src="https://assets.mixkit.co/videos/preview/mixkit-young-female-student-reading-a-book-in-a-library-41219-large.mp4" type="video/mp4">
+              </video>
+              <img class="poster-img" src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=700&q=80" alt="Sarah Nadira">
+              <span class="badge bg-dark position-anbsolute bottom-0 end-0 m-3 opacity-75">Hover to Play</span>
+            </div>
+            <div class="p-4">
+              <p class="fst-italic text-secondary mb-3">"Fasilitas laboratorium STEAM dan bimbingan guru membuka peluang bagi tim riset kami menembus kompetisi sains dunia."</p>
+              <strong class="d-block text-dark">Sarah Nadira</strong>
+              <span class="text-orange text-uppercase small fw-bold">Siswa Senior Grade 11</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Alumni -->
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="400" data-aos-duration="900">
+          <div class="testimonial-card shadow-sm" data-video-card>
+            <div class="video-viewport">
+              <video class="video-instance" muted playsinline loop preload="none">
+                <source src="https://assets.mixkit.co/videos/preview/mixkit-young-man-working-with-headphones-on-41223-large.mp4" type="video/mp4">
+              </video>
+              <img class="poster-img" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=700&q=80" alt="David Pratama">
+              <span class="badge bg-dark position-absolute bottom-0 end-0 m-3 opacity-75">Hover to Play</span>
+            </div>
+            <div class="p-4">
+              <p class="fst-italic text-secondary mb-3">"Fondasi penulisan esai riset mandiri IB Diploma di sini mempermudah adaptasi perkuliahan teknik saya di Swiss."</p>
+              <strong class="d-block text-dark">David Pratama</strong>
+              <span class="text-orange text-uppercase small fw-bold">Alumni (Mahasiswa Rekayasa ETH Zurich)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER MODULAR -->
+  <footer class="footer-ics">
+    <div class="footer-pre-strip">
+      <div class="container">
+        <div class="row align-items-center justify-content-between g-4">
+          <div class="col-lg-7">
+            <div class="d-flex align-items-center gap-3">
+              <span class="badge bg-orange rounded-pill px-3 py-2 text-uppercase fw-bold" style="font-size: 11px; letter-spacing: 0.1em;">
+                Akreditasi Penuh
+              </span>
+              <p class="text-white-50 mb-0 small">
+                Resmi terakreditasi oleh <strong>International Baccalaureate (IB) Continuum</strong> dan terafiliasi dengan asosiasi sekolah internasional Swiss.
+              </p>
+            </div>
+          </div>
+          <div class="col-lg-5 text-lg-end">
+            <button class="btn btn-outline-light rounded-pill px-4 py-2 fw-bold text-uppercase small me-2" data-bs-toggle="modal" data-bs-target="#tourModal">
+              Konsultasi Admisi
+            </button>
+            <a href="fasilitas.html" class="btn bg-orange text-white rounded-pill px-4 py-2 fw-bold text-uppercase small shadow-sm text-decoration-none">
+              Tur Kampus &rarr;
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="py-5">
+      <div class="container py-lg-4">
+        <div class="row g-5">
+          <div class="col-lg-4">
+            <a href="index.html" class="text-decoration-none d-inline-block mb-3">
+              <span class="footer-brand-title">Kandinsky Academy</span>
+              <span class="footer-sub">Est. 1960 &bull; IB World School</span>
+            </a>
+            <p class="text-white-50 small mt-3" style="max-width: 320px; line-height: 1.7;">
+              Membina karakter mandiri, ketelitian akademis, dan pemikiran berwawasan global melalui pendidikan berbasis inkuiri standar dunia.
+            </p>
+            <div class="d-flex gap-2 mt-4">
+              <a href="#" class="social-circle-btn" aria-label="LinkedIn">
+                <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.2V10.9H6.46M7.83 6.45a1.6 1.6 0 1 0 0 3.2 1.6 1.6 0 0 0 0-3.2Z"/></svg>
+              </a>
+              <a href="#" class="social-circle-btn" aria-label="Instagram">
+                <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+              </a>
+              <a href="#" class="social-circle-btn" aria-label="YouTube">
+                <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6">
+            <span class="footer-heading">Lokasi & Kontak</span>
+            <ul class="footer-links">
+              <li class="text-white-50 small mb-2">
+                Kampus Utama: Jl. Pendidikan Internasional No. 8, Kawasan Terpadu
+              </li>
+              <li class="text-white-50 small mb-2">
+                Tel: (+62) 21 8900 1234
+              </li>
+              <li class="text-white-50 small mb-2">
+                Admisi: admissions@kandinsky.sch.id
+              </li>
+              <li>
+                <a href="fasilitas.html">Akses & Denah Kampus &rarr;</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-lg-2 col-md-6">
+            <span class="footer-heading">Navigasi Profil</span>
+            <ul class="footer-links">
+              <li><a href="profil-singkat.html">Profil Singkat</a></li>
+              <li><a href="visi-misi.html">Visi & Misi</a></li>
+              <li><a href="struktur-organisasi.html">Struktur Organisasi</a></li>
+              <li><a href="fasilitas.html">Sarana Kampus</a></li>
+              <li><a href="ekstrakurikuler.html">Ekstrakurikuler</a></li>
+              <li><a href="gallery.html">Galeri Aktivitas</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-3 col-md-6">
+            <span class="footer-heading">Pendaftaran & Kabar</span>
+            <ul class="footer-links">
+              <li><a href="ppdb.html">Pendaftaran PPDB 2026</a></li>
+              <li><a href="pembayaran.html" class="text-orange fw-bold">Info Pembayaran Lengkap</a></li>
+              <li><a href="berita.html">Berita & Agenda Terkini</a></li>
+              <li><a href="berita.html">Prestasi Siswa</a></li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-footer-bottom">
+      <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+        <div>
+          &copy; 2026 Kandinsky Academy International School. All rights reserved.
+        </div>
+        <div>
+          <a href="#">Kebijakan Privasi</a>
+          <a href="#">Syarat & Ketentuan</a>
+          <a href="#">Aksesibilitas</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- BOOTSTRAP MODAL FORM: Booking Tur -->
+  <div class="modal fade" id="tourModal" tabindex="-1" aria-labelledby="tourModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-5 p-4 border-0 shadow-lg">
+        <div class="modal-header border-0 pb-0">
+          <div>
+            <span class="text-orange text-uppercase fw-bold small" style="letter-spacing: 0.15em;">ENQUIRY & TOUR</span>
+            <h4 class="modal-title fs-4 fw-bold mt-1" id="tourModalLabel">Jadwalkan Kunjungan Kampus</h4>
+          </div>
+          <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p class="text-secondary small mb-4">Tim admisi Kandinsky Academy siap mendampingi keluarga Anda melihat fasilitas dan metode pembelajaran kami.</p>
+
+          <form id="bootstrapTourForm" onsubmit="submitBootstrapTour(event)">
+            <div class="mb-3">
+              <label for="bsParentName" class="form-label fw-bold small text-uppercase">Nama Lengkap Orang Tua <span class="text-danger">*</span></label>
+              <input type="text" class="form-control rounded-3 p-3" id="bsParentName" placeholder="Contoh: Budi Santoso" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="bsParentEmail" class="form-label fw-bold small text-uppercase">Alamat Email Aktif <span class="text-danger">*</span></label>
+              <input type="email" class="form-control rounded-3 p-3" id="bsParentEmail" placeholder="nama@domain.com" required>
+            </div>
+
+            <div class="mb-4">
+              <label for="bsChildGrade" class="form-label fw-bold small text-uppercase">Tingkat Kelas Calon Siswa <span class="text-danger">*</span></label>
+              <select class="form-select rounded-3 p-3" id="bsChildGrade" required>
+                <option value="" disabled selected>Pilih jenjang anak...</option>
+                <option value="primary">Primary (Nursery - Grade 5)</option>
+                <option value="middle">Middle (Grade 6 - 8)</option>
+                <option value="senior">Senior (Grade 9 - 12)</option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn bg-orange text-white w-100 py-3 rounded-pill fw-bold text-uppercase shadow-sm">
+              Konfirmasi Kunjungan
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOOTSTRAP TOAST NOTIFICATION -->
+  <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1060;">
+    <div id="actionToast" class="toast align-items-center text-white bg-dark border-0 rounded-4 shadow" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body py-3 px-4" id="toastMessage">
+          Notifikasi sistem aktif.
+        </div>
+        <button type="button" class="btn-close btn-close-white me-3 m-auto shadow-none" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts: Vendor Libraries & Custom Logic -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+  <script>
+    // 1. Inisialisasi AOS (Animate On Scroll)
+    document.addEventListener('DOMContentLoaded', () => {
+      AOS.init({
+        once: true,
+        duration: 900,
+        easing: 'ease-out-cubic',
+        offset: 60
+      });
+    });
+
+    // 2. Parallax Scrolling Engine
+    const parallaxItems = document.querySelectorAll('.parallax-item');
+    window.addEventListener('scroll', () => {
+      const scrollY = window.pageYOffset;
+      parallaxItems.forEach(item => {
+        const speed = parseFloat(item.getAttribute('data-parallax-speed')) || 0.05;
+        const rect = item.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+          const offset = (scrollY - item.offsetTop) * speed;
+          item.style.transform = `translateY(${offset}px)`;
+        }
+      });
+    }, { passive: true });
+
+    // 3. Hero Video Play / Pause Toggle
+    const heroVid = document.getElementById('heroVideo');
+    const toggleBtn = document.getElementById('videoToggleBtn');
+    const pauseIcon = document.getElementById('pauseIcon');
+    const playIcon = document.getElementById('playIcon');
+
+    if (toggleBtn && heroVid) {
+      toggleBtn.addEventListener('click', () => {
+        if (heroVid.paused) {
+          heroVid.play();
+          pauseIcon.style.display = 'block';
+          playIcon.style.display = 'none';
+        } else {
+          heroVid.pause();
+          pauseIcon.style.display = 'none';
+          playIcon.style.display = 'block';
+        }
+      });
+    }
+
+    // 4. Tab Interaktif "We Inspire"
+    const inspireData = {
+      mission: {
+        text: "Di Kandinsky Academy, kami berkomitmen menciptakan lingkungan belajar suportif di mana setiap anggota komunitas ditantang mencapai potensi individual, mengejar minat, dan bertanggung jawab sosial.",
+        img: "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=900&q=80"
+      },
+      vision: {
+        text: "Membentuk siswa menjadi pembelajar sepanjang hayat yang berprinsip, merangkul keberagaman, dan berintegritas tinggi untuk berkontribusi aktif bagi peradaban global.",
+        img: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=900&q=80"
+      },
+      values: {
+        text: "Menjunjung rasa ingin tahu (inquiry), keberanian bernalar (courage), dan empati lintas budaya sebagai fondasi pembentukan etika dan karakter luhur para siswa kami.",
+        img: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=900&q=80"
+      }
+    };
+
+    function changeInspire(tabKey, element) {
+      document.querySelectorAll('.inspire-pill-stack .btn-pill').forEach(btn => btn.classList.remove('active'));
+      element.classList.add('active');
+
+      const quoteEl = document.getElementById('inspireQuoteText');
+      const imgEl = document.getElementById('inspireVisualImg');
+
+      if (quoteEl && imgEl) {
+        quoteEl.style.opacity = '0';
+        imgEl.style.opacity = '0.5';
+
+        setTimeout(() => {
+          quoteEl.innerText = inspireData[tabKey].text;
+          imgEl.src = inspireData[tabKey].img;
+          quoteEl.style.opacity = '1';
+          imgEl.style.opacity = '1';
+        }, 250);
+      }
+    }
+
+    // 5. Testimonial Video Hover Play / Pause
+    const videoCards = document.querySelectorAll('[data-video-card]');
+    videoCards.forEach(card => {
+      const video = card.querySelector('.video-instance');
+      if (!video) return;
+
+      card.addEventListener('mouseenter', () => {
+        video.muted = true;
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {});
+        }
+      });
+
+      card.addEventListener('mouseleave', () => {
+        video.pause();
+        video.currentTime = 0;
+      });
+    });
+
+    // 6. Count-Up Scoreboard dengan Easing Logaritmik Halus
+    const counters = document.querySelectorAll('[data-counter]');
+    let counterDone = false;
+
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !counterDone) {
+          counterDone = true;
+          counters.forEach(c => {
+            const target = parseFloat(c.getAttribute('data-counter'));
+            const isDecimal = c.getAttribute('data-decimal') === 'true';
+            const suffix = c.getAttribute('data-suffix') || '';
+            const duration = 2000;
+            const startTime = performance.now();
+
+            function updateCounter(currentTime) {
+              const elapsed = currentTime - startTime;
+              const progress = Math.min(elapsed / duration, 1);
+              const easeOut = 1 - Math.pow(1 - progress, 3);
+              const currentVal = target * easeOut;
+
+              if (isDecimal) {
+                c.innerText = currentVal.toFixed(1) + suffix;
+              } else {
+                c.innerText = Math.round(currentVal) + suffix;
+              }
+
+              if (progress < 1) {
+                requestAnimationFrame(updateCounter);
+              } else {
+                c.innerText = (isDecimal ? target.toFixed(1) : target) + suffix;
+              }
+            }
+            requestAnimationFrame(updateCounter);
+          });
+        }
+      });
+    }, { threshold: 0.25 });
+
+    const statsSection = document.querySelector('.bg-light-ics');
+    if (statsSection) statsObserver.observe(statsSection);
+
+    // 7. Modal & Toast Form Handling
+    const tourModalEl = document.getElementById('tourModal');
+    const toastEl = document.getElementById('actionToast');
+    let toast = null;
+    let modalInstance = null;
+
+    if (toastEl) {
+      toast = new bootstrap.Toast(toastEl, { delay: 3500 });
+    }
+    if (tourModalEl) {
+      modalInstance = bootstrap.Modal.getOrCreateInstance(tourModalEl);
+    }
+
+    function submitBootstrapTour(e) {
+      e.preventDefault();
+      const nameInput = document.getElementById('bsParentName');
+      const name = nameInput ? nameInput.value : 'Orang Tua Calon Siswa';
+      
+      if (modalInstance) modalInstance.hide();
+      e.target.reset();
+
+      const toastMsg = document.getElementById('toastMessage');
+      if (toastMsg) {
+        toastMsg.innerText = `Terima kasih, Bapak/Ibu ${name}. Jadwal kunjungan ke Kandinsky Academy berhasil dikonfirmasi!`;
+      }
+      if (toast) toast.show();
+    }
+  </script>
+</body>
+</html>
